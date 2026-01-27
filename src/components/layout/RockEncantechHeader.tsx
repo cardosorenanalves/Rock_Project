@@ -3,13 +3,18 @@ import logo from "../../assets/png/logo.png";
 
 export default function RockEncantechHeader() {
   return (
-    <header className="bg-[#111827] text-white py-4 px-4 md:px-8 flex justify-between items-center shadow-md">
+    <header className="bg-[#111827] text-white py-6 px-4 md:px-8 flex justify-between items-center shadow-md">
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-1">
           <Image src={logo} alt="Rock Encantech Logo" height={40} priority />
         </div>
       </div>
-      <button className="bg-[#1f2937] hover:bg-[#374151] text-white px-4 py-2 rounded-md flex items-center gap-2 text-sm font-medium transition-colors">
+      <a
+        href="https://github.com/cardosorenanalves/Rock_Project"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="bg-[#1f2937] hover:bg-[#374151] text-white px-4 py-2 rounded-md flex items-center gap-2 text-sm font-medium transition-colors"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="20"
@@ -33,7 +38,7 @@ export default function RockEncantechHeader() {
         >
           <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
-      </button>
+      </a>
     </header>
   );
 }
