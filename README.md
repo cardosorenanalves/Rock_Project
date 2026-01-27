@@ -2,6 +2,12 @@
 
 Bem-vindo ao **Rock Project**, uma aplicação web moderna desenvolvida para explorar e verificar **Números Perfeitos**. Este projeto demonstra o uso de algoritmos matemáticos eficientes, processamento em background com Web Workers e uma interface reativa construída com Next.js.
 
+## 🌐 Deploy e Demonstração
+
+A aplicação está hospedada e disponível publicamente através da Vercel. Você pode acessá-la e testá-la agora mesmo:
+
+🔗 **Acesse:** [https://rock-project-eosin.vercel.app](https://rock-project-eosin.vercel.app)
+
 ## 🧠 O que é um Número Perfeito?
 
 Na matemática, um **número perfeito** é um número inteiro positivo que é igual à soma de seus divisores positivos próprios (excluindo ele mesmo).
@@ -27,6 +33,55 @@ Permite que o usuário insira um número (de qualquer tamanho) e verifique insta
 Busca todos os números perfeitos dentro de um intervalo definido pelo usuário.
 - **Web Workers:** A busca é executada em uma thread separada (Web Worker) para garantir que a interface do usuário nunca trave, mesmo durante cálculos pesados.
 - **Suporte a BigInt:** Capaz de buscar e comparar números muito maiores que o limite padrão de inteiros do JavaScript (`2^53 - 1`).
+- **Download de PDF:** Para os números encontrados, é possível gerar e baixar um arquivo PDF com o número completo (para números menores) ou visualizá-los de forma abreviada (para números gigantes).
+
+## 📖 Guia de Uso
+
+### Como Testar a Aplicação
+
+#### 1. Verificando um Número (Aba "Verificar Número")
+Use esta funcionalidade se você já possui um número e quer saber se ele é perfeito.
+1. Acesse a aba **"Verificar Número"**.
+2. Digite ou cole o número no campo de texto.
+   - *Dica:* Você pode testar com números pequenos (ex: `6`, `28`) ou números gigantes.
+3. Clique em **"Verificar"**.
+4. O sistema informará instantaneamente se o número é Perfeito ou Não.
+
+#### 2. Encontrando Números (Aba "Encontrar Números")
+Use esta funcionalidade para descobrir números perfeitos dentro de um intervalo.
+1. Acesse a aba **"Encontrar Números"**.
+2. Defina o intervalo de busca:
+   - **De (Início):** O número onde a busca deve começar (ex: `1`).
+   - **Até (Fim):** O limite superior da busca.
+3. Clique em **"Buscar Números"**.
+4. A lista de números encontrados aparecerá abaixo.
+   - Para números onde a visualização é viável, você pode **baixar um PDF** com o número completo.
+   - Para números muito grandes, o sistema exibe um aviso de que o download não está disponível devido ao tamanho do arquivo.
+
+---
+
+## ⚡ Performance e Resultados de Testes
+
+Durante os testes internos de estresse e performance, a aplicação demonstrou alta capacidade de processamento.
+
+### 🏆 Recorde de 51 Números Perfeitos
+Em nossos testes intensivos, conseguimos encontrar e validar os primeiros **51 Números Perfeitos** conhecidos.
+- O 51º número perfeito é um número colossal.
+- **Limitação de Hardware:** Não foi possível avançar para o 52º número devido a limitações físicas de hardware (memória RAM e capacidade de processamento da CPU) da máquina utilizada nos testes, e não por limitações lógicas do algoritmo.
+
+### ⚠️ Aviso de Processamento Pesado
+É importante notar que quanto maior o número ou o intervalo de busca, **mais pesado é o processamento**.
+- Buscas por números perfeitos de alta magnitude exigem cálculos matemáticos intensivos.
+- Em dispositivos com menos recursos, tentar processar números astronômicos pode causar lentidão ou até mesmo travar momentaneamente a aba do navegador. Recomenda-se cautela ao buscar em intervalos muito grandes.
+
+### Evidências dos Testes
+Abaixo estão as capturas de tela dos testes internos onde alcançamos a marca de 51 números encontrados:
+
+![Resultado do Teste 1](src/assets/png/teste1.png)
+*Teste de busca atingindo números de alta magnitude.*
+
+![Resultado do Teste 2](src/assets/png/teste2.png)
+*Lista de resultados confirmando a descoberta de múltiplos números perfeitos.*
 
 ---
 
