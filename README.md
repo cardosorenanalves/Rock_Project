@@ -30,6 +30,51 @@ Busca todos os números perfeitos dentro de um intervalo definido pelo usuário.
 
 ---
 
+## 🏗️ Arquitetura e Estratégias de Resolução
+
+Este projeto adota princípios de **Clean Architecture** e separa responsabilidades de forma clara, tanto no Frontend quanto no Backend. Um dos pontos altos do projeto é a utilização de **duas abordagens distintas** para resolver problemas de alta complexidade computacional.
+
+### 1. Duas Abordagens para Cálculos Pesados
+
+Para lidar com a verificação e busca de Números Perfeitos (que podem ser astronomicamente grandes), utilizamos estratégias diferentes dependendo do caso de uso:
+
+#### A. Verificação Unitária: Server-Side Offloading (Next.js API)
+No componente `VerifyNumber`, quando o usuário insere um número, o sistema decide onde processá-lo:
+1. **Verificação Local:** Se o número for "pequeno" (gerado por $p \le 107$), o cálculo é feito instantaneamente no navegador usando `BigInt`.
+2. **Verificação Remota:** Se o número for gigantesco, a requisição é enviada para nossa **API interna do Next.js**.
+   - **Por que?** Isso mantém o bundle do cliente leve e centraliza a lógica complexa de verificação híbrida (matemática avançada) no backend.
+
+#### B. Busca em Intervalo: Client-Side Parallelism (Web Workers)
+No componente `FindNumber`, o usuário pode buscar números em um intervalo. Como isso exige testar milhões de possibilidades:
+1. **Web Workers:** Utilizamos a API de Workers para rodar o algoritmo de busca em uma **thread separada**.
+2. **Resultado:** A interface (UI) permanece 100% fluida e responsiva, mesmo enquanto o processador está fritando nos cálculos em segundo plano.
+   - **Por que?** Enviar um intervalo inteiro para o backend poderia causar timeout ou sobrecarga no servidor. Distribuir esse trabalho para a máquina do cliente (via Worker) é uma estratégia mais escalável para este tipo de tarefa.
+
+---
+
+### 2. Estrutura Arquitetural (Frontend & Backend)
+
+O projeto segue uma adaptação da Clean Architecture para o ecossistema React/Next.js:
+
+#### 🏛️ Frontend (Camadas)
+1. **Presentation (UI):** Componentes (`VerifyNumber`, `FindNumber`) que apenas exibem dados e capturam eventos.
+2. **Application (Hooks):** Custom Hooks (`useVerifyNumber`) agem como "Controllers", gerenciando estado local e chamando serviços.
+3. **Domain (Core):**
+   - **Use Cases:** `VerifyNumberUseCase` (Frontend) contém a regra de negócio que decide se a verificação deve ser Local ou Remota.
+   - **Interfaces:** `IVerifyRepository` define o contrato para as fontes de dados.
+4. **Infrastructure (Data):**
+   - `LocalVerifyRepository`: Implementação que calcula no browser.
+   - `RemoteVerifyRepository`: Implementação que faz `fetch` para `/api/verify`.
+
+#### 🏛️ Backend (Next.js Internal)
+1. **API Route:** `app/api/verify/route.ts` recebe a requisição HTTP.
+2. **Service:** `VerifyService` orquestra a execução.
+3. **Use Case:** `VerifyNumberUseCase` (Backend) executa a lógica matemática pesada (validação exata ou híbrida/heurística).
+
+Esta separação permite que testemos cada parte isoladamente (como feito nos testes unitários) e facilita a manutenção futura.
+
+---
+
 ## 🛠️ Tecnologias Utilizadas
 
 - **Core:** [Next.js 15](https://nextjs.org/) (App Router), [React 19](https://react.dev/)
