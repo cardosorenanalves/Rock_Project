@@ -1,28 +1,12 @@
+import Image from "next/image";
+import logo from "../../assets/png/logo.png";
+
 export default function RockEncantechHeader() {
   return (
     <header className="bg-[#111827] text-white py-4 px-4 md:px-8 flex justify-between items-center shadow-md">
       <div className="flex items-center gap-3">
-        <button className="text-yellow-400">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-          </svg>
-        </button>
-        <div className="flex items-center gap-1 font-bold text-xl tracking-wide">
-          <span className="text-white">ROCK</span>
-          <span className="text-yellow-400">•</span>
-          <span className="text-yellow-400">ENCANTECH</span>
+        <div className="flex items-center gap-1">
+          <Image src={logo} alt="Rock Encantech Logo" height={40} priority />
         </div>
       </div>
       <button className="bg-[#1f2937] hover:bg-[#374151] text-white px-4 py-2 rounded-md flex items-center gap-2 text-sm font-medium transition-colors">
