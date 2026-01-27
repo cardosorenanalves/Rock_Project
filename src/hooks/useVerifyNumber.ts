@@ -11,8 +11,15 @@ export function useVerifyNumber() {
     method?: string;
   } | null>(null);
 
+  const [error, setError] = useState<string | null>(null);
+
   const handleVerify = async () => {
-    if (!number) return;
+    setError(null);
+    if (!number.trim()) {
+      setError("Por favor, digite um número.");
+      return;
+    }
+
     setLoading(true);
     try {
       const data = await VerifyService.verify(number);
@@ -40,5 +47,6 @@ export function useVerifyNumber() {
     result,
     handleVerify,
     loading,
+    error,
   };
 }

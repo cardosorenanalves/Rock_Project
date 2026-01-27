@@ -13,6 +13,7 @@ export function FindNumber() {
     foundNumbers,
     isSearching,
     handleFind,
+    error,
   } = useFindPerfectNumbers();
 
   return (
@@ -33,7 +34,11 @@ export function FindNumber() {
             value={rangeStart}
             onChange={(e) => setRangeStart(e.target.value)}
             placeholder="Ex: 1"
-            className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all h-32 resize-y font-mono text-sm"
+            className={`w-full px-4 py-3 rounded-md border focus:outline-none focus:ring-2 focus:border-transparent transition-all h-32 resize-y font-mono text-sm ${
+                error
+                ? "border-red-500 focus:ring-red-500"
+                : "border-slate-300 focus:ring-primary"
+            }`}
             />
         </div>
         <div>
@@ -43,10 +48,16 @@ export function FindNumber() {
             value={rangeEnd}
             onChange={(e) => setRangeEnd(e.target.value)}
             placeholder="Ex: 1000"
-            className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all h-32 resize-y font-mono text-sm"
+            className={`w-full px-4 py-3 rounded-md border focus:outline-none focus:ring-2 focus:border-transparent transition-all h-32 resize-y font-mono text-sm ${
+                error
+                ? "border-red-500 focus:ring-red-500"
+                : "border-slate-300 focus:ring-primary"
+            }`}
             />
         </div>
         </div>
+
+        {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
 
         <Button
         onClick={handleFind}

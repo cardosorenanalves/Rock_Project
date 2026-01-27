@@ -5,6 +5,7 @@ export function useFindPerfectNumbers() {
   const [rangeEnd, setRangeEnd] = useState("");
   const [foundNumbers, setFoundNumbers] = useState<string[] | null>(null);
   const [isSearching, setIsSearching] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const workerRef = useRef<Worker | null>(null);
 
   useEffect(() => {
@@ -16,7 +17,24 @@ export function useFindPerfectNumbers() {
   }, []);
 
   const handleFind = () => {
-    if (!rangeStart || !rangeEnd) return;
+    setError(null);
+    if (!rangeStart.trim() || !rangeEnd.trim()) {
+      setError("Por favor, preencha ambos os campos.");
+      return;
+    }
+
+    try {
+      const start = BigInt(rangeStart);
+      const end = BigInt(rangeEnd);
+
+      if (start >= end) {
+        setError("O número inicial deve ser menor que o número final.");
+        return;
+      }
+    } catch (e) {
+      setError("Por favor, insira números válidos.");
+      return;
+    }
     
     setIsSearching(true);
     setFoundNumbers(null);
@@ -60,5 +78,6 @@ export function useFindPerfectNumbers() {
     foundNumbers,
     isSearching,
     handleFind,
+    error,
   };
 }

@@ -5,7 +5,7 @@ import { useVerifyNumber } from "../../../hooks/useVerifyNumber";
 import { abbreviateMiddle } from "../../../utils/format";
 
 export function VerifyNumber() {
-  const { number, setNumber, result, handleVerify, loading } = useVerifyNumber();
+  const { number, setNumber, result, handleVerify, loading, error } = useVerifyNumber();
 
   return (
     <div className="space-y-6">
@@ -19,8 +19,13 @@ export function VerifyNumber() {
           value={number}
           onChange={(e) => setNumber(e.target.value)}
           placeholder="Digite um número"
-          className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all h-32 resize-y font-mono text-sm"
+          className={`w-full px-4 py-3 rounded-md border focus:outline-none focus:ring-2 focus:border-transparent transition-all h-32 resize-y font-mono text-sm ${
+            error
+              ? "border-red-500 focus:ring-red-500"
+              : "border-slate-300 focus:ring-primary"
+          }`}
         />
+        {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
       </div>
 
       <Button
