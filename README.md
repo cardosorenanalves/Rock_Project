@@ -121,7 +121,7 @@ src/
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/seu-usuario/rock-project.git
+git clone https://github.com/cardosorenanalves/Rock_Project
 cd rock-project
 ```
 
