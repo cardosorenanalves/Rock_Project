@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { MERSENNE_P } from "../utils/mersenne";
-import { digitsOfPerfect, perfectFromP } from "../utils/digits";
+import { VerifyService } from "../services/VerifyService";
 
 export function useVerifyNumber() {
   const [number, setNumber] = useState("");
@@ -10,70 +9,26 @@ export function useVerifyNumber() {
     matchedP: number | null;
     method?: string;
   } | null>(null);
-  const MAX_P_BIGINT = 107; // limite seguro no browser
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     if (!number) return;
 
-    const input = number.trim();
-    const normalized = input.replace(/^0+/, "") || "0";
-
-    const digitCount = normalized.length;
-
-    for (const p of MERSENNE_P) {
-      const expectedDigits = digitsOfPerfect(p);
-      console.log(digitCount, expectedDigits);
-      if (digitCount === expectedDigits) {
-        // p pequeno → confirma com BigInt
-        if (p <= MAX_P_BIGINT) {
-          console.log("asda");
-          const perfect = perfectFromP(p);
-          console.log(perfect.toString());
-          if (perfect.toString() === normalized) {
-            setResult({ isPerfect: true, checkedNumber: input, matchedP: p });
-            return;
-          }
-        } else {
-          fetch("/api/verify", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              number: normalized,
-            }),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data.isPerfect) {
-                setResult({
-                  isPerfect: true,
-                  checkedNumber: input,
-                  matchedP: data.p,
-                  method: data.method,
-                });
-                return;
-              } else {
-                setResult({
-                  isPerfect: false,
-                  checkedNumber: input,
-                  matchedP: null,
-                });
-              }
-            })
-            .catch((err) => {
-              console.error("Erro na verificação:", err);
-              setResult({
-                isPerfect: false,
-                checkedNumber: input,
-                matchedP: null,
-              });
-            });
-        }
-      }
-
-      if (digitCount < expectedDigits) break;
+    try {
+      const data = await VerifyService.verify(number);
+      setResult({
+        isPerfect: data.isPerfect,
+        checkedNumber: number.trim(),
+        matchedP: data.matchedP ?? null,
+        method: data.method,
+      });
+    } catch (error) {
+      console.error("Erro na verificação:", error);
+      setResult({
+        isPerfect: false,
+        checkedNumber: number.trim(),
+        matchedP: null,
+      });
     }
-
-    setResult({ isPerfect: false, checkedNumber: input, matchedP: null });
   };
 
   return {
