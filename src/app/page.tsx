@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { MERSENNE_P } from "../utils/mersenne";
-import { digitsOfPerfect, perfectFromP } from "../utils/digits";
+import { digitsOfPerfect, perfectFromP, getPerfectPrefix, getPerfectSuffix } from "../utils/digits";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<"verify" | "find">("verify");
@@ -11,6 +11,7 @@ export default function Home() {
     isPerfect: boolean;
     checkedNumber: string;
     matchedP: number | null;
+    method?: string;
   } | null>(null);
   const MAX_P_BIGINT = 107; // limite seguro no browser
 
@@ -37,47 +38,79 @@ export default function Home() {
       setIsSearching(true);
       setFoundNumbers(null);
 
-      // Limpeza e validação básica
       const startStr = rangeStart.trim().replace(/\D/g, "") || "0";
       const endStr = rangeEnd.trim().replace(/\D/g, "") || "0";
 
-      const min = BigInt(startStr);
-      const max = BigInt(endStr);
-
-      if (min > max) {
-        alert("O número inicial deve ser menor ou igual ao final.");
-        setIsSearching(false);
-        return;
+      const minLen = startStr.length;
+      const maxLen = endStr.length;
+      console.log(minLen, maxLen)
+      const safeRange = minLen <= 150000 && maxLen <= 150000;
+      let min: bigint | null = null;
+      let max: bigint | null = null;
+      if (safeRange) {
+        min = BigInt(startStr);
+        max = BigInt(endStr);
       }
 
+      // if (min > max) {
+      //   alert("O número inicial deve ser menor ou igual ao final.");
+      //   setIsSearching(false);
+      //   return;
+      // }
+
       const found: string[] = [];
-      const maxDigits = endStr.length;
+      const maxDigits = maxLen;
 
       // Usando timeout para não travar a UI se o loop for pesado
       setTimeout(() => {
         try {
           for (const p of MERSENNE_P) {
             const digits = digitsOfPerfect(p);
-            // Se o número de dígitos do perfeito for muito maior que o max, paramos
-            // Adicionamos uma margem de segurança pequena
             if (digits > maxDigits + 1) break;
+            if (digits < minLen - 1) continue;
 
-            // Só calculamos se for "seguro" ou se o usuário pediu explicitamente um range que comporta
-            // Para p muito grandes, o cálculo pode ser lento, mas o BigInt aguenta.
-            // O gargalo maior seria converter para string para comparar se não cuidarmos.
-            
-            // Heurística: se tem menos dígitos que min, pula
-            if (digits < startStr.length - 1) continue;
+            if (digits <= 150000) {
+              const perfectStr = perfectFromP(p).toString();
+              const len = perfectStr.length;
 
-            const perfectVal = perfectFromP(p);
-            
-            if (perfectVal >= min && perfectVal <= max) {
-              found.push(perfectVal.toString());
+              let inRange = false;
+              if (safeRange && min !== null && max !== null) {
+                const perfectBig = BigInt(perfectStr);
+                inRange = perfectBig >= min && perfectBig <= max;
+                if (perfectBig > max) {
+                  break;
+                }
+              } else {
+                const geMin = len > minLen || (len === minLen && perfectStr >= startStr);
+                const leMax = len < maxLen || (len === maxLen && perfectStr <= endStr);
+                inRange = geMin && leMax;
+                if (len > maxLen) {
+                  break;
+                }
+              }
+
+              if (inRange) {
+                found.push(perfectStr);
+              }
+              continue;
             }
-            
-            if (perfectVal > max) break;
+
+            const len = digits;
+            if (len < minLen) continue;
+            if (len > maxLen) break;
+            const prefixLen = 15;
+            const expectedPrefix = getPerfectPrefix(p, prefixLen);
+            const minPrefix = startStr.substring(0, prefixLen);
+            const maxPrefix = endStr.substring(0, prefixLen);
+            const geMin = len > minLen || expectedPrefix >= minPrefix;
+            const leMax = len < maxLen || expectedPrefix <= maxPrefix;
+            if (geMin && leMax) {
+              const preview = `${getPerfectPrefix(p, 15)}…${getPerfectSuffix(p, 15)}`;
+              found.push(preview);
+            }
           }
           setFoundNumbers(found);
+          console.log(found[found.length - 1]);
         } catch (error) {
           console.error(error);
           alert("Erro ao processar números. Intervalo pode ser muito complexo.");
@@ -120,14 +153,23 @@ export default function Home() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              length: normalized.length,
-              prefix: normalized.slice(0, 12),
+              number: normalized,
             }),
           }).then(res => res.json()).then(data => {
             if (data.isPerfect) {
-              setResult({ isPerfect: true, checkedNumber: input, matchedP: p });
+              setResult({ 
+                isPerfect: true, 
+                checkedNumber: input, 
+                matchedP: data.p,
+                method: data.method 
+              });
               return;
+            } else {
+              setResult({ isPerfect: false, checkedNumber: input, matchedP: null });
             }
+          }).catch(err => {
+            console.error("Erro na verificação:", err);
+            setResult({ isPerfect: false, checkedNumber: input, matchedP: null });
           })
         }
       }
@@ -236,13 +278,12 @@ export default function Home() {
                   <label className="block text-slate-500 mb-2">
                     Digite um número
                   </label>
-                  <input
-                    type="text"
+                  <textarea
                     inputMode="numeric"
                     value={number}
                     onChange={(e) => setNumber(e.target.value)}
                     placeholder="Digite um número"
-                    className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all h-32 resize-y font-mono text-sm"
                   />
                 </div>
 
@@ -277,6 +318,12 @@ export default function Home() {
                       </span>
                     </div>
 
+                    {result.method === "hybrid" && (
+                      <div className="mb-4 p-3 bg-blue-50 text-blue-700 rounded-md text-sm border border-blue-100">
+                        Nota: Devido ao tamanho extremo, este número foi verificado usando validação avançada de prefixo, sufixo e contagem de dígitos.
+                      </div>
+                    )}
+
                     <div className="mt-4 pt-4 border-t border-slate-200">
                       <p className="text-slate-600 text-sm">
                         • Números Perfeitos: 6, 28, 496, 8128, 33550336, ...
@@ -300,26 +347,24 @@ export default function Home() {
                       <label className="block text-slate-500 mb-2 text-sm">
                         De (Início)
                       </label>
-                      <input
-                        type="text"
+                      <textarea
                         inputMode="numeric"
                         value={rangeStart}
                         onChange={(e) => setRangeStart(e.target.value)}
                         placeholder="Ex: 1"
-                        className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all h-32 resize-y font-mono text-sm"
                       />
                     </div>
                     <div>
                       <label className="block text-slate-500 mb-2 text-sm">
                         Até (Fim)
                       </label>
-                      <input
-                        type="text"
+                      <textarea
                         inputMode="numeric"
                         value={rangeEnd}
                         onChange={(e) => setRangeEnd(e.target.value)}
                         placeholder="Ex: 1000"
-                        className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all h-32 resize-y font-mono text-sm"
                       />
                     </div>
                   </div>
@@ -327,13 +372,23 @@ export default function Home() {
                   <button
                     onClick={handleFind}
                     disabled={isSearching}
-                    className={`w-full font-bold py-3 px-4 rounded-md transition-colors ${
+                    className={`w-full font-bold py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 ${
                       isSearching
                         ? "bg-slate-300 text-slate-500 cursor-not-allowed"
                         : "bg-[#facc15] hover:bg-[#eab308] text-slate-900"
                     }`}
                   >
-                    {isSearching ? "Buscando..." : "Buscar Números"}
+                    {isSearching ? (
+                      <>
+                        <svg className="animate-spin h-5 w-5 text-slate-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Loading...
+                      </>
+                    ) : (
+                      "Buscar Números"
+                    )}
                   </button>
                 </div>
 
