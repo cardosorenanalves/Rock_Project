@@ -19,13 +19,13 @@ export function VerifyNumber() {
           value={number}
           onChange={(e) => setNumber(e.target.value)}
           placeholder="Digite um número"
-          className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all h-32 resize-y font-mono text-sm"
+          className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all h-32 resize-y font-mono text-sm"
         />
       </div>
 
       <Button
         onClick={handleVerify}
-        className="w-full bg-[#facc15] hover:bg-[#eab308] text-slate-900 font-bold py-3 px-4 rounded-md transition-colors"
+        className="w-full bg-primary hover:opacity-90 text-slate-900 font-bold py-3 px-4 rounded-md transition-colors"
       >
         Verificar
       </Button>

@@ -13,7 +13,7 @@ export default function Tabs({
       <button
         onClick={() => onChange("verify")}
         className={`flex-1 py-3 px-4 text-center font-medium transition-colors ${
-          active === "verify" ? "bg-[#1d4ed8] text-white" : "bg-white text-slate-500 hover:bg-slate-50"
+          active === "verify" ? "bg-secondary text-white" : "bg-white text-slate-500 hover:bg-slate-50"
         }`}
       >
         Verificar Número
@@ -21,7 +21,7 @@ export default function Tabs({
       <button
         onClick={() => onChange("find")}
         className={`flex-1 py-3 px-4 text-center font-medium transition-colors ${
-          active === "find" ? "bg-[#1d4ed8] text-white" : "bg-white text-slate-500 hover:bg-slate-50"
+          active === "find" ? "bg-secondary text-white" : "bg-white text-slate-500 hover:bg-slate-50"
         }`}
       >
         Encontrar Números

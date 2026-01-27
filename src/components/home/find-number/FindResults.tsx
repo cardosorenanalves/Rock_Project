@@ -16,7 +16,7 @@ export default function FindResults({
         <ul className="space-y-3">
           {foundNumbers.map((num, idx) => (
             <li key={idx} className="bg-white p-3 rounded border border-slate-200 shadow-sm break-all font-mono text-sm text-slate-700">
-              <span className="font-bold text-blue-600 mr-2">#{idx + 1}</span>
+              <span className="font-bold text-secondary mr-2">#{idx + 1}</span>
               {abbreviateMiddle(num, 15, 15, 40)}
             </li>
           ))}

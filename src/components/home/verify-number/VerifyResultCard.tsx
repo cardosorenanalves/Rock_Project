@@ -20,8 +20,8 @@ export default function VerifyResultCard({
     <div className="mt-6 bg-slate-50 rounded-lg p-6 border border-slate-100">
       <div className="flex items-center gap-3 mb-4">
         {result.isPerfect ? (
-          <div className="bg-yellow-100 p-1 rounded-full">
-            <svg className="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
+          <div className="bg-primary/20 p-1 rounded-full">
+            <svg className="w-6 h-6 text-yellow-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
           </div>
         ) : (
           <div className="bg-red-100 p-1 rounded-full">
@@ -35,7 +35,7 @@ export default function VerifyResultCard({
         </span>
       </div>
       {result.method === "hybrid" && (
-        <div className="mb-4 p-3 bg-blue-50 text-blue-700 rounded-md text-sm border border-blue-100">
+        <div className="mb-4 p-3 bg-secondary/10 text-secondary rounded-md text-sm border border-blue-100">
           Nota: Devido ao tamanho extremo, este número foi verificado usando validação avançada de prefixo, sufixo e contagem de dígitos.
         </div>
       )}

@@ -33,7 +33,7 @@ export function FindNumber() {
             value={rangeStart}
             onChange={(e) => setRangeStart(e.target.value)}
             placeholder="Ex: 1"
-            className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all h-32 resize-y font-mono text-sm"
+            className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all h-32 resize-y font-mono text-sm"
             />
         </div>
         <div>
@@ -43,7 +43,7 @@ export function FindNumber() {
             value={rangeEnd}
             onChange={(e) => setRangeEnd(e.target.value)}
             placeholder="Ex: 1000"
-            className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all h-32 resize-y font-mono text-sm"
+            className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all h-32 resize-y font-mono text-sm"
             />
         </div>
         </div>
@@ -55,7 +55,7 @@ export function FindNumber() {
         className={`w-full font-bold py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 ${
             isSearching
             ? "bg-slate-300 text-slate-500 cursor-not-allowed"
-            : "bg-[#facc15] hover:bg-[#eab308] text-slate-900"
+            : "bg-primary hover:opacity-90 text-slate-900"
         }`}
         >
         Buscar Números

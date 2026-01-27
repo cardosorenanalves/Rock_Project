@@ -12,8 +12,8 @@ export default function Footer() {
         </div>
       </div>
       <div className="absolute right-0 top-0 bottom-0 flex">
-        <div className="h-full w-12 bg-[#1d4ed8] transform -skew-x-12 translate-x-4 border-l-4 border-[#111827]"></div>
-        <div className="h-full w-12 bg-yellow-400 transform -skew-x-12 translate-x-2 border-l-4 border-[#111827]"></div>
+        <div className="h-full w-12 bg-secondary transform -skew-x-12 translate-x-4 border-l-4 border-[#111827]"></div>
+        <div className="h-full w-12 bg-primary transform -skew-x-12 translate-x-2 border-l-4 border-[#111827]"></div>
       </div>
     </footer>
   );
