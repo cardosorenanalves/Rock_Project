@@ -89,15 +89,24 @@ Esta separação permite que testemos cada parte isoladamente (como feito nos te
 
 ```
 src/
-├── app/                 # Rotas e layouts do Next.js (App Router)
-├── components/          # Componentes React reutilizáveis
-│   ├── home/            # Componentes específicos da Home (Verify/Find)
-│   └── forms/           # Componentes de formulário (Button, TextArea)
-├── hooks/               # Custom Hooks para lógica de estado (useVerifyNumber, etc.)
-├── utils/               # Funções matemáticas auxiliares (Mersenne, Digits, Format)
-├── workers/             # Web Workers para processamento em background
-├── backend/             # Lógica de negócio (Use Cases e Services)
-└── ...
+├── app/                 # Camada de Entrada (Next.js App Router)
+│   ├── api/             # Rotas de API (Backend Entrypoint)
+│   └── page.tsx         # Página Principal
+├── components/          # Camada de Apresentação (UI)
+│   ├── home/            # VerifyNumber e FindNumber
+│   └── forms/           # Componentes base (Button, TextArea)
+├── hooks/               # Camada de Aplicação (React Hooks)
+│   └── useVerifyNumber  # Controller do Frontend
+├── domain/              # Camada de Domínio (Core Business Rules)
+│   ├── usecases/        # Regras de negócio puras (Frontend)
+│   └── repositories/    # Interfaces (Contratos)
+├── infrastructure/      # Camada de Infraestrutura (Implementações)
+│   └── repositories/    # LocalVerifyRepository e RemoteVerifyRepository
+├── backend/             # Backend Logic (Server-Side)
+│   ├── services/        # Orquestração de serviços
+│   └── usecases/        # Regras de negócio pesadas (Matemática)
+├── workers/             # Processamento Paralelo (Client-Side)
+└── utils/               # Helpers Matemáticos Compartilhados
 ```
 
 ---
