@@ -5,7 +5,7 @@ import { useVerifyNumber } from "../../../hooks/useVerifyNumber";
 import { abbreviateMiddle } from "../../../utils/format";
 
 export function VerifyNumber() {
-  const { number, setNumber, result, handleVerify } = useVerifyNumber();
+  const { number, setNumber, result, handleVerify, loading } = useVerifyNumber();
 
   return (
     <div className="space-y-6">
@@ -25,7 +25,13 @@ export function VerifyNumber() {
 
       <Button
         onClick={handleVerify}
-        className="w-full bg-primary hover:opacity-90 text-slate-900 font-bold py-3 px-4 rounded-md transition-colors"
+        loading={loading}
+        disabled={loading}
+        className={`w-full font-bold py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 ${
+          loading
+            ? "bg-slate-300 text-slate-500 cursor-not-allowed"
+            : "bg-primary hover:opacity-90 text-slate-900"
+        }`}
       >
         Verificar
       </Button>

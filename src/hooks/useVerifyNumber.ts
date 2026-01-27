@@ -3,6 +3,7 @@ import { VerifyService } from "../services/VerifyService";
 
 export function useVerifyNumber() {
   const [number, setNumber] = useState("");
+  const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{
     isPerfect: boolean;
     checkedNumber: string;
@@ -12,7 +13,7 @@ export function useVerifyNumber() {
 
   const handleVerify = async () => {
     if (!number) return;
-
+    setLoading(true);
     try {
       const data = await VerifyService.verify(number);
       setResult({
@@ -28,6 +29,8 @@ export function useVerifyNumber() {
         checkedNumber: number.trim(),
         matchedP: null,
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,5 +39,6 @@ export function useVerifyNumber() {
     setNumber,
     result,
     handleVerify,
+    loading,
   };
 }
