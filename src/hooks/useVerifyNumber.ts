@@ -16,7 +16,7 @@ export function useVerifyNumber() {
   const handleVerify = async () => {
     setError(null);
     if (!number.trim()) {
-      setError("Por favor, digite um número.");
+      setError("required");
       return;
     }
 

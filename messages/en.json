@@ -1,0 +1,62 @@
+{
+  "Home": {
+    "title": "Perfect Numbers",
+    "tabs": {
+      "verify": "Verify Number",
+      "find": "Find Numbers"
+    }
+  },
+  "VerifyNumber": {
+    "title": "Is it a perfect number?",
+    "label": "Enter a number",
+    "placeholder": "Enter a number",
+    "button": "Verify",
+    "description": "A perfect number is equal to the sum of all its positive divisors, excluding itself.",
+    "errors": {
+      "required": "Please enter a number.",
+      "invalid": "Please enter a valid number."
+    }
+  },
+  "FindNumber": {
+    "title": "Find Perfect Numbers",
+    "description": "Enter a range to search for perfect numbers.",
+    "labelStart": "From (Start)",
+    "labelEnd": "To (End)",
+    "placeholderStart": "Ex: 1",
+    "placeholderEnd": "Ex: 1000",
+    "button": "Find Numbers",
+    "errors": {
+      "required": "Please fill in both fields.",
+      "invalid": "Please enter valid numbers.",
+      "range": "The start number must be smaller than the end number."
+    },
+    "results": {
+      "title": "Results Found: {count}",
+      "empty": "No perfect numbers found in this range.",
+      "tooBig": "Too big",
+      "tooBigTooltip": "Too big for full view",
+      "viewFull": "View Full",
+      "view": "View"
+    }
+  },
+  "VerifyResult": {
+    "perfect": "It is a Perfect Number!",
+    "notPerfect": "It is not a Perfect Number.",
+    "explanation": "The sum of divisors of {number} is {sum}."
+  },
+  "ViewPerfectNumber": {
+    "title": "Perfect Number #{index}",
+    "subtitle": "Full view of the found number.",
+    "back": "Back",
+    "download": "Download PDF"
+  },
+  "Layout": {
+    "header": {
+      "logoAlt": "Rock Encantech Logo",
+      "github": "GitHub"
+    },
+    "footer": {
+      "logoAlt": "Rock Encantech Logo"
+    }
+  }
+}

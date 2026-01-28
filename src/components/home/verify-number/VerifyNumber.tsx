@@ -3,29 +3,31 @@ import TextArea from "../../forms/TextArea";
 import VerifyResultCard from "./VerifyResultCard";
 import { useVerifyNumber } from "../../../hooks/useVerifyNumber";
 import { abbreviateMiddle } from "../../../utils/format";
+import { useTranslations } from "next-intl";
 
 export function VerifyNumber() {
   const { number, setNumber, result, handleVerify, loading, error } = useVerifyNumber();
+  const t = useTranslations("VerifyNumber");
 
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-xl font-bold text-slate-900 mb-4">
-          É um número perfeito?
+          {t("title")}
         </h2>
-        <label className="block text-slate-500 mb-2">Digite um número</label>
+        <label className="block text-slate-500 mb-2">{t("label")}</label>
         <TextArea
           inputMode="numeric"
           value={number}
           onChange={(e) => setNumber(e.target.value)}
-          placeholder="Digite um número"
+          placeholder={t("placeholder")}
           className={`w-full px-4 py-3 rounded-md border focus:outline-none focus:ring-2 focus:border-transparent transition-all h-32 resize-y font-mono text-sm ${
             error
               ? "border-red-500 focus:ring-red-500"
               : "border-slate-300 focus:ring-primary"
           }`}
         />
-        {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
+        {error && <p className="mt-2 text-sm text-red-500">{t(`errors.${error}`)}</p>}
       </div>
 
       <Button
@@ -38,12 +40,11 @@ export function VerifyNumber() {
             : "bg-primary hover:opacity-90 text-slate-900"
         }`}
       >
-        Verificar
+        {t("button")}
       </Button>
 
       <p className="text-slate-500 text-sm leading-relaxed">
-        Um número perfeito é igual à soma de todos seus divisores positivos,
-        exceto ele mesmo.
+        {t("description")}
       </p>
 
       <VerifyResultCard result={result} abbreviateMiddle={abbreviateMiddle} />

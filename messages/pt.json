@@ -1,0 +1,62 @@
+{
+  "Home": {
+    "title": "Números Perfeitos",
+    "tabs": {
+      "verify": "Verificar Número",
+      "find": "Encontrar Números"
+    }
+  },
+  "VerifyNumber": {
+    "title": "É um número perfeito?",
+    "label": "Digite um número",
+    "placeholder": "Digite um número",
+    "button": "Verificar",
+    "description": "Um número perfeito é igual à soma de todos seus divisores positivos, exceto ele mesmo.",
+    "errors": {
+      "required": "Por favor, digite um número.",
+      "invalid": "Por favor, digite um número válido."
+    }
+  },
+  "FindNumber": {
+    "title": "Encontrar Números Perfeitos",
+    "description": "Digite um intervalo para buscar números perfeitos.",
+    "labelStart": "De (Início)",
+    "labelEnd": "Até (Fim)",
+    "placeholderStart": "Ex: 1",
+    "placeholderEnd": "Ex: 1000",
+    "button": "Buscar Números",
+    "errors": {
+      "required": "Por favor, preencha ambos os campos.",
+      "invalid": "Por favor, insira números válidos.",
+      "range": "O número inicial deve ser menor que o número final."
+    },
+    "results": {
+      "title": "Resultados Encontrados: {count}",
+      "empty": "Nenhum número perfeito encontrado neste intervalo.",
+      "tooBig": "Muito grande",
+      "tooBigTooltip": "Muito grande para visualização completa",
+      "viewFull": "Ver Completo",
+      "view": "Ver"
+    }
+  },
+  "VerifyResult": {
+    "perfect": "É um Número Perfeito!",
+    "notPerfect": "Não é um Número Perfeito.",
+    "explanation": "A soma dos divisores de {number} é {sum}."
+  },
+  "ViewPerfectNumber": {
+    "title": "Número Perfeito #{index}",
+    "subtitle": "Visualização completa do número encontrado.",
+    "back": "Voltar",
+    "download": "Baixar PDF"
+  },
+  "Layout": {
+    "header": {
+      "logoAlt": "Logo Rock Encantech",
+      "github": "GitHub"
+    },
+    "footer": {
+      "logoAlt": "Logo Rock Encantech"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useTranslations } from "next-intl";
 
 export default function Tabs({
   active,
@@ -8,6 +9,7 @@ export default function Tabs({
   active: "verify" | "find";
   onChange: (tab: "verify" | "find") => void;
 }) {
+  const t = useTranslations("Home.tabs");
   return (
     <div className="flex border-b border-slate-200">
       <button
@@ -16,7 +18,7 @@ export default function Tabs({
           active === "verify" ? "bg-secondary text-white" : "bg-white text-slate-500 hover:bg-slate-50"
         }`}
       >
-        Verificar Número
+        {t("verify")}
       </button>
       <button
         onClick={() => onChange("find")}
@@ -24,7 +26,7 @@ export default function Tabs({
           active === "find" ? "bg-secondary text-white" : "bg-white text-slate-500 hover:bg-slate-50"
         }`}
       >
-        Encontrar Números
+        {t("find")}
       </button>
     </div>
   );

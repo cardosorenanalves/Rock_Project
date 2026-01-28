@@ -47,7 +47,7 @@ export function useFindPerfectNumbers() {
   const handleFind = () => {
     setError(null);
     if (!rangeStart.trim() || !rangeEnd.trim()) {
-      setError("Por favor, preencha ambos os campos.");
+      setError("required");
       return;
     }
 
@@ -61,11 +61,11 @@ export function useFindPerfectNumbers() {
     if (startStr.length > MAX_SAFE_BIGINT_LENGTH || endStr.length > MAX_SAFE_BIGINT_LENGTH) {
       // Validação baseada em string para números gigantes
       if (startStr.length > endStr.length) {
-        setError("O número inicial deve ser menor que o número final.");
+        setError("range");
         return;
       }
       if (startStr.length === endStr.length && startStr > endStr) {
-        setError("O número inicial deve ser menor que o número final.");
+        setError("range");
         return;
       }
     } else {
@@ -75,12 +75,12 @@ export function useFindPerfectNumbers() {
         const end = BigInt(endStr);
 
         if (start >= end) {
-          setError("O número inicial deve ser menor que o número final.");
+          setError("range");
           return;
         }
       } catch (e) {
         // Se falhar na conversão (ex: caracteres inválidos), mostra erro
-        setError("Por favor, insira números válidos.");
+        setError("invalid");
         return;
       }
     }

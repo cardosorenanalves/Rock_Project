@@ -3,14 +3,16 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { jsPDF } from "jspdf";
-import RockEncantechHeader from "../../../components/layout/RockEncantechHeader";
-import Footer from "../../../components/layout/Footer";
-import { getSessionStorageSafe } from "../../../utils/storage";
+import RockEncantechHeader from "../../../../components/layout/RockEncantechHeader";
+import Footer from "../../../../components/layout/Footer";
+import { getSessionStorageSafe } from "../../../../utils/storage";
+import { useTranslations } from "next-intl";
 
 export default function ViewPerfectNumber() {
   const router = useRouter();
   const [number, setNumber] = useState<string | null>(null);
   const [index, setIndex] = useState<number | null>(null);
+  const t = useTranslations("ViewPerfectNumber");
 
   useEffect(() => {
     const storedNumber = getSessionStorageSafe("selectedPerfectNumber");
@@ -41,7 +43,7 @@ export default function ViewPerfectNumber() {
     
     // Título
     doc.setFontSize(16);
-    doc.text(`Número Perfeito #${index + 1}`, margin, 20);
+    doc.text(t("title", { index: index + 1 }), margin, 20);
     
     // Conteúdo
     doc.setFontSize(10);
@@ -75,10 +77,10 @@ export default function ViewPerfectNumber() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
             <div>
               <h1 className="text-2xl font-bold text-slate-900">
-                Número Perfeito #{index !== null ? index + 1 : ""}
+                {t("title", { index: index !== null ? index + 1 : "" })}
               </h1>
               <p className="text-slate-500 text-sm mt-1">
-                Visualização completa do número encontrado.
+                {t("subtitle")}
               </p>
             </div>
             <button
@@ -98,7 +100,7 @@ export default function ViewPerfectNumber() {
               >
                 <path d="M19 12H5M12 19l-7-7 7-7" />
               </svg>
-              Voltar
+              {t("back")}
             </button>
           </div>
 
@@ -126,7 +128,7 @@ export default function ViewPerfectNumber() {
                 <polyline points="7 10 12 15 17 10"></polyline>
                 <line x1="12" y1="15" x2="12" y2="3"></line>
               </svg>
-              Baixar PDF
+              {t("download")}
             </button>
           </div>
         </div>

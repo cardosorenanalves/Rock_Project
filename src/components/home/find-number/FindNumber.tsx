@@ -3,6 +3,7 @@ import TextArea from "../../forms/TextArea";
 import FindResults from "./FindResults";
 import { useFindPerfectNumbers } from "../../../hooks/useFindPerfectNumbers";
 import { abbreviateMiddle } from "../../../utils/format";
+import { useTranslations } from "next-intl";
 
 export function FindNumber() {
   const {
@@ -16,69 +17,70 @@ export function FindNumber() {
     error,
     saveSearchState,
   } = useFindPerfectNumbers();
+  const t = useTranslations("FindNumber");
 
   return (
     <div className="space-y-6">
-    <div>
+      <div>
         <h2 className="text-xl font-bold text-slate-900 mb-4">
-        Encontrar Números Perfeitos
+          {t("title")}
         </h2>
         <p className="text-slate-500 text-sm mb-4">
-        Digite um intervalo para buscar números perfeitos.
+          {t("description")}
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <div>
-            <label className="block text-slate-500 mb-2 text-sm">De (Início)</label>
+          <div>
+            <label className="block text-slate-500 mb-2 text-sm">{t("labelStart")}</label>
             <TextArea
-            inputMode="numeric"
-            value={rangeStart}
-            onChange={(e) => setRangeStart(e.target.value)}
-            placeholder="Ex: 1"
-            className={`w-full px-4 py-3 rounded-md border focus:outline-none focus:ring-2 focus:border-transparent transition-all h-32 resize-y font-mono text-sm ${
+              inputMode="numeric"
+              value={rangeStart}
+              onChange={(e) => setRangeStart(e.target.value)}
+              placeholder={t("placeholderStart")}
+              className={`w-full px-4 py-3 rounded-md border focus:outline-none focus:ring-2 focus:border-transparent transition-all h-12 resize-none font-mono text-sm ${
                 error
                 ? "border-red-500 focus:ring-red-500"
                 : "border-slate-300 focus:ring-primary"
-            }`}
+              }`}
             />
-        </div>
-        <div>
-            <label className="block text-slate-500 mb-2 text-sm">Até (Fim)</label>
+          </div>
+          <div>
+            <label className="block text-slate-500 mb-2 text-sm">{t("labelEnd")}</label>
             <TextArea
-            inputMode="numeric"
-            value={rangeEnd}
-            onChange={(e) => setRangeEnd(e.target.value)}
-            placeholder="Ex: 1000"
-            className={`w-full px-4 py-3 rounded-md border focus:outline-none focus:ring-2 focus:border-transparent transition-all h-32 resize-y font-mono text-sm ${
+              inputMode="numeric"
+              value={rangeEnd}
+              onChange={(e) => setRangeEnd(e.target.value)}
+              placeholder={t("placeholderEnd")}
+              className={`w-full px-4 py-3 rounded-md border focus:outline-none focus:ring-2 focus:border-transparent transition-all h-12 resize-none font-mono text-sm ${
                 error
                 ? "border-red-500 focus:ring-red-500"
                 : "border-slate-300 focus:ring-primary"
-            }`}
+              }`}
             />
-        </div>
+          </div>
         </div>
 
-        {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
+        {error && <p className="mb-4 text-sm text-red-500">{t(`errors.${error}`)}</p>}
 
         <Button
-        onClick={handleFind}
-        disabled={isSearching}
-        loading={isSearching}
-        className={`w-full font-bold py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 ${
+          onClick={handleFind}
+          disabled={isSearching}
+          loading={isSearching}
+          className={`w-full font-bold py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 ${
             isSearching
             ? "bg-slate-300 text-slate-500 cursor-not-allowed"
             : "bg-primary hover:opacity-90 text-slate-900"
-        }`}
+          }`}
         >
-        Buscar Números
+          {t("button")}
         </Button>
-    </div>
+      </div>
 
-    <FindResults 
-        foundNumbers={foundNumbers} 
-        abbreviateMiddle={abbreviateMiddle} 
-        onViewDetails={saveSearchState}
-    />
+      <FindResults 
+          foundNumbers={foundNumbers} 
+          abbreviateMiddle={abbreviateMiddle} 
+          onViewDetails={saveSearchState}
+      />
     </div>
   );
 }

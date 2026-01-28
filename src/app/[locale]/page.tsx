@@ -1,15 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Header from "../components/layout/Header";
-import RockEncantechHeader from "../components/layout/RockEncantechHeader";
-import Tabs from "../components/navigation/Tabs";
-import Footer from "../components/layout/Footer";
-import { FindNumber } from "../components/home/find-number/FindNumber";
-import { VerifyNumber } from "../components/home/verify-number/VerifyNumber";
-import { getSessionStorageSafe, setSessionStorageSafe } from "../utils/storage";
+import { useTranslations } from "next-intl";
+import Header from "../../components/layout/Header";
+import RockEncantechHeader from "../../components/layout/RockEncantechHeader";
+import Tabs from "../../components/navigation/Tabs";
+import Footer from "../../components/layout/Footer";
+import { FindNumber } from "../../components/home/find-number/FindNumber";
+import { VerifyNumber } from "../../components/home/verify-number/VerifyNumber";
+import { getSessionStorageSafe, setSessionStorageSafe } from "../../utils/storage";
 
 export default function Home() {
+  const t = useTranslations("Home");
   const [activeTab, setActiveTab] = useState<"verify" | "find">("verify");
 
   useEffect(() => {
@@ -31,7 +33,7 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="flex-1 max-w-2xl w-full mx-auto p-4 md:p-8">
-        <Header title="Números Perfeitos" />
+        <Header title={t("title")} />
 
         <div className="bg-white rounded-lg shadow-sm overflow-hidden border border-slate-200">
           {/* Tabs */}
