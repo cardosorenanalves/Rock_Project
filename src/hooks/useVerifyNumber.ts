@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { VerifyService } from "../services/VerifyService";
+import { getSessionStorageSafe, setSessionStorageSafe } from "../utils/storage";
 
 export function useVerifyNumber() {
   const [number, setNumber] = useState("");
@@ -12,6 +13,31 @@ export function useVerifyNumber() {
   } | null>(null);
 
   const [error, setError] = useState<string | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const storedNumber = getSessionStorageSafe("verifyNumber_number");
+    const storedResult = getSessionStorageSafe("verifyNumber_result");
+
+    if (storedNumber) setNumber(storedNumber);
+    if (storedResult) {
+      try {
+        setResult(JSON.parse(storedResult));
+      } catch (e) {
+        console.error("Failed to parse stored result", e);
+      }
+    }
+    setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded) {
+      setSessionStorageSafe("verifyNumber_number", number);
+      if (result) {
+        setSessionStorageSafe("verifyNumber_result", JSON.stringify(result));
+      }
+    }
+  }, [number, result, isLoaded]);
 
   const handleVerify = async () => {
     setError(null);

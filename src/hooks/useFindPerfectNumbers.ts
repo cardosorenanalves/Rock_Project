@@ -28,7 +28,18 @@ export function useFindPerfectNumbers() {
     setIsLoaded(true);
   }, []);
 
+  useEffect(() => {
+    if (isLoaded) {
+      setSessionStorageSafe("findPerfectNumbers_rangeStart", rangeStart);
+      setSessionStorageSafe("findPerfectNumbers_rangeEnd", rangeEnd);
+      if (foundNumbers !== null) {
+        setSessionStorageSafe("findPerfectNumbers_foundNumbers", JSON.stringify(foundNumbers));
+      }
+    }
+  }, [rangeStart, rangeEnd, foundNumbers, isLoaded]);
+
   const saveSearchState = () => {
+    // Mantido para compatibilidade, mas agora o useEffect cuida da persistência
     setSessionStorageSafe("findPerfectNumbers_rangeStart", rangeStart);
     setSessionStorageSafe("findPerfectNumbers_rangeEnd", rangeEnd);
     if (foundNumbers !== null) {

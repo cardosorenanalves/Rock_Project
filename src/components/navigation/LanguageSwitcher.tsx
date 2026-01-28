@@ -1,10 +1,12 @@
 "use client";
 
 import { useLocale } from "next-intl";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
 export default function LanguageSwitcher() {
   const locale = useLocale();
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const handleLocaleChange = (newLocale: string) => {
@@ -12,8 +14,8 @@ export default function LanguageSwitcher() {
     document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=31536000; SameSite=Lax`;
     
     startTransition(() => {
-      // Reload the page to apply the new locale from the cookie
-      window.location.reload();
+      // Refresh the page content to apply the new locale without full reload
+      router.refresh();
     });
   };
 

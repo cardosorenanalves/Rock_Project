@@ -37,7 +37,7 @@ export function FindNumber() {
               value={rangeStart}
               onChange={(e) => setRangeStart(e.target.value)}
               placeholder={t("placeholderStart")}
-              className={`w-full px-4 py-3 rounded-md border focus:outline-none focus:ring-2 focus:border-transparent transition-all h-12 resize-none font-mono text-sm ${
+              className={`w-full px-4 py-3 rounded-md border focus:outline-none focus:ring-2 focus:border-transparent transition-all h-32 resize-y font-mono text-sm ${
                 error
                 ? "border-red-500 focus:ring-red-500"
                 : "border-slate-300 focus:ring-primary"
@@ -51,7 +51,7 @@ export function FindNumber() {
               value={rangeEnd}
               onChange={(e) => setRangeEnd(e.target.value)}
               placeholder={t("placeholderEnd")}
-              className={`w-full px-4 py-3 rounded-md border focus:outline-none focus:ring-2 focus:border-transparent transition-all h-12 resize-none font-mono text-sm ${
+              className={`w-full px-4 py-3 rounded-md border focus:outline-none focus:ring-2 focus:border-transparent transition-all h-32 resize-y font-mono text-sm ${
                 error
                 ? "border-red-500 focus:ring-red-500"
                 : "border-slate-300 focus:ring-primary"
