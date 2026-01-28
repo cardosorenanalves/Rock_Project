@@ -110,7 +110,6 @@ export function useFindPerfectNumbers() {
     workerRef.current.onmessage = (e) => {
       const { type, payload } = e.data;
       if (type === "SUCCESS") {
-        console.log(payload[payload.length - 1])
         setFoundNumbers(payload);
         setIsSearching(false);
       } else if (type === "ERROR") {
