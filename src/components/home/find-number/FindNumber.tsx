@@ -14,6 +14,7 @@ export function FindNumber() {
     isSearching,
     handleFind,
     error,
+    saveSearchState,
   } = useFindPerfectNumbers();
 
   return (
@@ -73,7 +74,11 @@ export function FindNumber() {
         </Button>
     </div>
 
-    <FindResults foundNumbers={foundNumbers} abbreviateMiddle={abbreviateMiddle} />
+    <FindResults 
+        foundNumbers={foundNumbers} 
+        abbreviateMiddle={abbreviateMiddle} 
+        onViewDetails={saveSearchState}
+    />
     </div>
   );
 }

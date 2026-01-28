@@ -1,47 +1,24 @@
 "use client";
 import React from "react";
-import { jsPDF } from "jspdf";
+import { useRouter } from "next/navigation";
+import { setSessionStorageSafe } from "../../../utils/storage";
 
 export default function FindResults({
   foundNumbers,
   abbreviateMiddle,
+  onViewDetails,
 }: {
   foundNumbers: string[] | null;
   abbreviateMiddle: (s: string, start?: number, end?: number, threshold?: number) => string;
+  onViewDetails: () => void;
 }) {
-  const handleDownload = (num: string, index: number) => {
-    const doc = new jsPDF();
-    doc.setFont("courier");
-    
-    // Configurações da página
-    const pageHeight = doc.internal.pageSize.height;
-    const margin = 10;
-    const lineHeight = 5; // Altura da linha para font size 10
-    let cursorY = 30; // Posição Y inicial
-    
-    // Título
-    doc.setFontSize(16);
-    doc.text(`Número Perfeito #${index + 1}`, margin, 20);
-    
-    // Conteúdo
-    doc.setFontSize(10);
-    const splitText = doc.splitTextToSize(num, 190);
-    
-    // Garantir que é um array para iteração
-    const lines = Array.isArray(splitText) ? splitText : [splitText];
-    
-    lines.forEach((line) => {
-      // Verificar se cabe na página atual
-      if (cursorY + lineHeight > pageHeight - margin) {
-        doc.addPage();
-        cursorY = margin + 10; // Reiniciar cursor na nova página
-      }
-      
-      doc.text(line, margin, cursorY);
-      cursorY += lineHeight;
-    });
-    
-    doc.save(`numero-perfeito-${index + 1}.pdf`);
+  const router = useRouter();
+
+  const handleView = (num: string, index: number) => {
+    onViewDetails();
+    setSessionStorageSafe("selectedPerfectNumber", num);
+    setSessionStorageSafe("selectedPerfectNumberIndex", index.toString());
+    router.push("/perfect-number/view");
   };
 
   if (foundNumbers === null) return null;
@@ -62,22 +39,21 @@ export default function FindResults({
                 
                 <div className="shrink-0">
                   {isAbbreviated ? (
-                    <span className="text-xs text-slate-400 italic" title="Muito grande para download">
+                    <span className="text-xs text-slate-400 italic" title="Muito grande para visualização completa">
                       ⚠️ <span className="hidden sm:inline">Muito grande</span>
                     </span>
                   ) : (
                     <button
-                      onClick={() => handleDownload(num, idx)}
+                      onClick={() => handleView(num, idx)}
                       className="text-xs bg-secondary hover:opacity-90 text-white px-2 sm:px-3 py-2 rounded-md transition-colors flex items-center gap-1.5 font-sans font-bold shadow-sm"
-                      title="Baixar PDF"
+                      title="Ver Completo"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="7 10 12 15 17 10"></polyline>
-                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
                       </svg>
-                      <span className="hidden sm:inline">Baixar PDF</span>
-                      <span className="sm:hidden">PDF</span>
+                      <span className="hidden sm:inline">Ver Completo</span>
+                      <span className="sm:hidden">Ver</span>
                     </button>
                   )}
                 </div>

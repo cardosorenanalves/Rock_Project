@@ -5,6 +5,15 @@ import { useFindPerfectNumbers } from '../../../hooks/useFindPerfectNumbers';
 // Mock the hook
 jest.mock('../../../hooks/useFindPerfectNumbers');
 
+// Mock next/navigation
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    back: jest.fn(),
+    forward: jest.fn(),
+  }),
+}));
+
 describe('FindNumber', () => {
   const mockHandleFind = jest.fn();
   const mockSetRangeStart = jest.fn();
@@ -21,6 +30,7 @@ describe('FindNumber', () => {
       isSearching: false,
       handleFind: mockHandleFind,
       error: null,
+      saveSearchState: jest.fn(),
     });
   });
 
@@ -66,6 +76,7 @@ describe('FindNumber', () => {
       isSearching: false,
       handleFind: mockHandleFind,
       error: errorMessage,
+      saveSearchState: jest.fn(),
     });
 
     render(<FindNumber />);
@@ -85,6 +96,7 @@ describe('FindNumber', () => {
       isSearching: true,
       handleFind: mockHandleFind,
       error: null,
+      saveSearchState: jest.fn(),
     });
 
     render(<FindNumber />);

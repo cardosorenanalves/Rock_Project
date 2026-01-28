@@ -1,15 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../components/layout/Header";
 import RockEncantechHeader from "../components/layout/RockEncantechHeader";
 import Tabs from "../components/navigation/Tabs";
 import Footer from "../components/layout/Footer";
 import { FindNumber } from "../components/home/find-number/FindNumber";
 import { VerifyNumber } from "../components/home/verify-number/VerifyNumber";
+import { getSessionStorageSafe, setSessionStorageSafe } from "../utils/storage";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState<"verify" | "find">("verify");
+
+  useEffect(() => {
+    const storedTab = getSessionStorageSafe("activeTab");
+    if (storedTab === "verify" || storedTab === "find") {
+      setActiveTab(storedTab);
+    }
+  }, []);
+
+  const handleTabChange = (tab: "verify" | "find") => {
+    setActiveTab(tab);
+    setSessionStorageSafe("activeTab", tab);
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 font-sans text-slate-900">
@@ -22,7 +35,7 @@ export default function Home() {
 
         <div className="bg-white rounded-lg shadow-sm overflow-hidden border border-slate-200">
           {/* Tabs */}
-          <Tabs active={activeTab} onChange={setActiveTab} />
+          <Tabs active={activeTab} onChange={handleTabChange} />
 
           {/* Content */}
           <div className="p-6 md:p-8">

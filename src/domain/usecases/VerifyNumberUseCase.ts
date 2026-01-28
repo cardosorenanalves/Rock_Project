@@ -32,8 +32,6 @@ export class VerifyNumberUseCase {
     }
 
     // Caso contrário (P grande ou não encontrado candidato óbvio, mas pode ser verificação remota)
-    // Na verdade, se não achou candidatoP pelo tamanho, já poderia retornar false aqui mesmo para economizar rede.
-    // Mas vamos manter a lógica original que delegava.
     
     // Se não encontrou candidato pelo tamanho exato, já sabemos que não é perfeito (exceto se a formula de digits falhar, o que não deve acontecer)
     if (!candidateP) {

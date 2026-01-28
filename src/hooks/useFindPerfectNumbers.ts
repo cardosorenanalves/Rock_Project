@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { getSessionStorageSafe, setSessionStorageSafe } from "../utils/storage";
 
 export function useFindPerfectNumbers() {
   const [rangeStart, setRangeStart] = useState("");
@@ -6,7 +7,34 @@ export function useFindPerfectNumbers() {
   const [foundNumbers, setFoundNumbers] = useState<string[] | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
   const workerRef = useRef<Worker | null>(null);
+
+  useEffect(() => {
+    const storedStart = getSessionStorageSafe("findPerfectNumbers_rangeStart");
+    const storedEnd = getSessionStorageSafe("findPerfectNumbers_rangeEnd");
+    const storedResults = getSessionStorageSafe("findPerfectNumbers_foundNumbers");
+
+    if (storedStart) setRangeStart(storedStart);
+    if (storedEnd) setRangeEnd(storedEnd);
+    if (storedResults) {
+      try {
+        setFoundNumbers(JSON.parse(storedResults));
+      } catch (e) {
+        console.error("Failed to parse stored numbers", e);
+      }
+    }
+    
+    setIsLoaded(true);
+  }, []);
+
+  const saveSearchState = () => {
+    setSessionStorageSafe("findPerfectNumbers_rangeStart", rangeStart);
+    setSessionStorageSafe("findPerfectNumbers_rangeEnd", rangeEnd);
+    if (foundNumbers !== null) {
+      setSessionStorageSafe("findPerfectNumbers_foundNumbers", JSON.stringify(foundNumbers));
+    }
+  };
 
   useEffect(() => {
     return () => {
@@ -23,17 +51,38 @@ export function useFindPerfectNumbers() {
       return;
     }
 
-    try {
-      const start = BigInt(rangeStart);
-      const end = BigInt(rangeEnd);
+    // Validação segura para números gigantes
+    const startStr = rangeStart.trim();
+    const endStr = rangeEnd.trim();
+    
+    // Limite seguro para BigInt (embora suporte mais, vamos ser conservadores para evitar travamentos)
+    const MAX_SAFE_BIGINT_LENGTH = 10000;
 
-      if (start >= end) {
+    if (startStr.length > MAX_SAFE_BIGINT_LENGTH || endStr.length > MAX_SAFE_BIGINT_LENGTH) {
+      // Validação baseada em string para números gigantes
+      if (startStr.length > endStr.length) {
         setError("O número inicial deve ser menor que o número final.");
         return;
       }
-    } catch (e) {
-      setError("Por favor, insira números válidos.");
-      return;
+      if (startStr.length === endStr.length && startStr > endStr) {
+        setError("O número inicial deve ser menor que o número final.");
+        return;
+      }
+    } else {
+      // Validação padrão com BigInt para números "pequenos"
+      try {
+        const start = BigInt(startStr);
+        const end = BigInt(endStr);
+
+        if (start >= end) {
+          setError("O número inicial deve ser menor que o número final.");
+          return;
+        }
+      } catch (e) {
+        // Se falhar na conversão (ex: caracteres inválidos), mostra erro
+        setError("Por favor, insira números válidos.");
+        return;
+      }
     }
     
     setIsSearching(true);
@@ -79,5 +128,6 @@ export function useFindPerfectNumbers() {
     isSearching,
     handleFind,
     error,
+    saveSearchState,
   };
 }

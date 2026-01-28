@@ -22,6 +22,7 @@ global.Worker = MockWorker;
 describe('useFindPerfectNumbers', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    sessionStorage.clear();
   });
 
   it('should initialize with default values', () => {
