@@ -60,6 +60,16 @@ Use esta funcionalidade para descobrir números perfeitos dentro de um intervalo
 
 ---
 
+### 3. Internacionalização (i18n)
+Utilizamos `next-intl` para criar uma experiência globalizada.
+- **Middleware Inteligente:** Configurado para roteamento limpo (sem prefixos `/pt` ou `/en` na URL) e detecção baseada em cookies.
+- **Server Components:** Traduções carregadas no servidor para máxima performance.
+
+### 4. Persistência de Estado (State Management)
+Implementamos uma camada de persistência local para melhorar a UX.
+- **Session Storage:** Dados de inputs e resultados de cálculos são salvos em tempo real.
+- **Recuperação Automática:** Ao recarregar a página, o estado anterior é restaurado, evitando frustração do usuário.
+
 ## ⚡ Performance e Resultados de Testes
 
 Durante os testes internos de estresse e performance, a aplicação demonstrou alta capacidade de processamento.
