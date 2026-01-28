@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import logo from "../../assets/png/logo.png";
 
 import { useTranslations } from "next-intl";
@@ -12,9 +13,9 @@ export default function RockEncantechHeader() {
   return (
     <header className="bg-[#111827] text-white py-6 px-4 md:px-8 flex justify-between items-center shadow-md">
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-1">
+        <Link href="/" className="flex items-center gap-1 hover:opacity-80 transition-opacity">
           <Image src={logo} alt={t("logoAlt")} height={40} priority />
-        </div>
+        </Link>
       </div>
       <div className="flex items-center gap-4">
         <LanguageSwitcher />
